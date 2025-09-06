@@ -27,7 +27,7 @@ app.post("/cron/fetch-feeds", async (req, res) => {
 
 app.get("/v1/feed", async (req, res) => {
   await fetchFeeds();
-  const limit = parseInt(req.query.limit as string) || 20;
+  const limit = parseInt(req.query.limit) || 20;
   const articles = await prisma.article.findMany({
     take: limit,
     orderBy: {

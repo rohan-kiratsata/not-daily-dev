@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "seed": "tsx prisma/seed.ts",
-    "build": "tsc",
+    "seed": "node prisma/seed.js",
+    "build": "esbuild server.js --bundle --platform=node --outfile=dist/server.js",
     "dev": "nodemon server.ts",
     "start": "node dist/server.js",
     "postinstall": "npx prisma generate"
@@ -21,6 +21,7 @@
     "@types/pg": "^8.10.0",
     "nodemon": "^3.1.9",
     "tsx": "^4.0.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "esbuild": "^0.25.0"
   }
 }

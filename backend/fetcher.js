@@ -19,7 +19,7 @@ export async function fetchFeeds() {
         const published_at = item.isoDate || item.pubDate;
 
         await prisma.article.upsert({
-          where: { url: url! },
+          where: { url: url },
           update: {
             title,
             summary,
@@ -27,7 +27,7 @@ export async function fetchFeeds() {
           },
           create: {
             sourceId: source.id,
-            url: url!,
+            url: url,
             title,
             summary,
             publishedAt: published_at,
@@ -40,7 +40,7 @@ export async function fetchFeeds() {
       });
 
       console.log(`Fetched ${source.name}`);
-    } catch (err: any) {
+    } catch (err) {
       console.error(`Failed ${source.name}`, err.message);
     }
   }
