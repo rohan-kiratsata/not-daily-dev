@@ -1,0 +1,48 @@
+name: RSS Feed Fetcher Cron
+
+on:
+  schedule:
+    # Run every hour at minute 0
+    - cron: "0 * * * *"
+  # Allow manual triggering for testing
+  workflow_dispatch:
+
+jobs:
+  fetch-feeds:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Fetch RSS Feeds
+        run: |
+          echo "Starting RSS feed fetch at $(date)"
+
+
+          RENDER_URL="https://not-daily-dev-fetcher.onrender.com"
+
+          # Make the request to your cron endpoint
+          response=$(curl -s -w "\n%{http_code}" -X POST "$RENDER_URL/cron/fetch-feeds")
+
+          # Extract the HTTP status code (last line)
+          http_code=$(echo "$response" | tail -n1)
+
+          # Extract the response body (all lines except the last)
+          response_body=$(echo "$response" | head -n -1)
+
+          echo "HTTP Status: $http_code"
+          echo "Response: $response_body"
+
+          # Check if the request was successful
+          if [ "$http_code" -eq 200 ]; then
+            echo "✅ RSS feeds fetched successfully"
+            exit 0
+          else
+            echo "❌ Failed to fetch RSS feeds. HTTP Status: $http_code"
+            echo "Response: $response_body"
+            exit 1
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "🚨 RSS feed fetch failed at $(date)"
+          echo "Check your Render service logs for more details"
