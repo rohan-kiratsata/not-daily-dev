@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+model Source {
+  id          Int       @id @default(autoincrement())
+  name        String
+  url         String
+  feedUrl     String    @unique @map("feed_url")
+  lastFetched DateTime? @map("last_fetched") @db.Timestamptz
+
+  articles Article[]
+
+  @@map("sources")
+}
+
+model Article {
+  id          BigInt    @id @default(autoincrement())
+  sourceId    Int?      @map("source_id")
+  url         String    @unique
+  title       String?
+  summary     String?
+  publishedAt DateTime? @map("published_at") @db.Timestamptz
+  fetchedAt   DateTime  @default(now()) @map("fetched_at") @db.Timestamptz
+
+  source Source? @relation(fields: [sourceId], references: [id])
+
+  @@map("articles")
+}

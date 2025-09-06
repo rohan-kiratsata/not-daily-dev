@@ -1,0 +1,26 @@
+{
+  "scripts": {
+    "seed": "tsx prisma/seed.ts",
+    "build": "tsc",
+    "dev": "nodemon server.ts",
+    "start": "node dist/server.js",
+    "postinstall": "npx prisma generate"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.15.0",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "node-cron": "^4.2.1",
+    "pg": "^8.16.3",
+    "prisma": "^6.15.0",
+    "rss-parser": "^3.13.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^20.0.0",
+    "@types/pg": "^8.10.0",
+    "nodemon": "^3.1.9",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  }
+}
